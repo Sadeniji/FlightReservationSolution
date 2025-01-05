@@ -13,6 +13,7 @@ public interface IRefreshToken
     void AddToken(RefreshToken token);
     void UpdateToken(RefreshToken token);
     Task<RefreshToken?> GetRefreshTokenAsync(string token);
+    Task<RefreshToken?> GetRefreshTokenByIdAsync(string userId);
 }
 
 public class RefreshTokenManagement(AppDbContext context) : IRefreshToken
@@ -45,4 +46,7 @@ public class RefreshTokenManagement(AppDbContext context) : IRefreshToken
 
         return _token ?? null;
     }
+
+    public async Task<RefreshToken?> GetRefreshTokenByIdAsync(string userId) 
+        => await context.RefreshTokens.AsNoTracking().FirstOrDefaultAsync(u => u.UserId == userId);
 }
